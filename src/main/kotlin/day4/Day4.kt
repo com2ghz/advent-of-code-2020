@@ -11,6 +11,7 @@ fun main() {
 class Day4 {
     private val HEX_COLOR_MATCHER = "#([a-f0-9]{6})".toRegex();
     private val DIGIT_MATCHER = "\\d{9}".toRegex();
+    private val LINES = Files.readAllLines(Paths.get("src/main/resources/day4.txt"))
 
     fun part1() {
         val count = createPassports()
@@ -32,11 +33,9 @@ class Day4 {
     }
 
     private fun createPassports(): ArrayList<Passport> {
-        val lines = Files.readAllLines(Paths.get("src/main/resources/day4.txt"))
-
         val passports = ArrayList<Passport>()
         var currentPassport = Passport()
-        lines.forEach { line ->
+        LINES.forEach { line ->
             if (line.isEmpty()) {
                 passports.add(currentPassport)
                 currentPassport = Passport()
