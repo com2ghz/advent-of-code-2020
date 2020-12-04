@@ -31,11 +31,6 @@ fun main() {
     }
     passports.add(currentPassport)
 
-    passports.forEach {
-        val isValid = requiredFieldsPresent(it)
-        println("$isValid $it")
-    }
-
     val count = passports.filter {
         requiredFieldsPresent(it)
     }.count()
