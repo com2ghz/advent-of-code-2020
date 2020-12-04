@@ -12,23 +12,6 @@ class Day4 {
     private val HEX_COLOR_MATCHER = "#([a-f0-9]{6})".toRegex();
     private val DIGIT_MATCHER = "\\d{9}".toRegex();
 
-    private val validBirthYear: Predicate<String> = Predicate { it.toInt() in 1920..2002 }
-    private val validIssueYear: Predicate<String> = Predicate { it.toInt() in 2010..2020 }
-    private val validExpirationYear: Predicate<String> = Predicate { it.toInt() in 2020..2030 }
-    private val validHeight: Predicate<String> = Predicate {
-        val number = it.substring(0, it.length - 2)
-
-        val unit = it.substring(it.length - 2)
-        when (unit) {
-            "cm" -> number.isNotEmpty() && number.toInt() in 150..193
-            "in" -> number.isNotEmpty() && number.toInt() in 59..76
-            else -> false
-        }
-    }
-    private val validHairColor: Predicate<String> = Predicate { HEX_COLOR_MATCHER.matches(it) }
-    private val validEyeColor: Predicate<String> = Predicate { it in setOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth") }
-    private val validPassportId: Predicate<String> = Predicate { DIGIT_MATCHER.matches(it) }
-
     fun part1() {
         val count = createPassports()
             .filter(this::requiredFieldsPresent)
@@ -42,7 +25,7 @@ class Day4 {
 
         val count = passports
             .filter(this::requiredFieldsPresent)
-            .filter(this::validFields)
+            .filter(this::validatedFields)
             .count()
 
         println(count)
@@ -86,7 +69,24 @@ class Day4 {
             passport.ecl.isNotEmpty() &&
             passport.pid.isNotEmpty()
 
-    private fun validFields(passport: Passport) =
+    private val validBirthYear: Predicate<String> = Predicate { it.toInt() in 1920..2002 }
+    private val validIssueYear: Predicate<String> = Predicate { it.toInt() in 2010..2020 }
+    private val validExpirationYear: Predicate<String> = Predicate { it.toInt() in 2020..2030 }
+    private val validHeight: Predicate<String> = Predicate {
+        val number = it.substring(0, it.length - 2)
+
+        val unit = it.substring(it.length - 2)
+        when (unit) {
+            "cm" -> number.isNotEmpty() && number.toInt() in 150..193
+            "in" -> number.isNotEmpty() && number.toInt() in 59..76
+            else -> false
+        }
+    }
+    private val validHairColor: Predicate<String> = Predicate { HEX_COLOR_MATCHER.matches(it) }
+    private val validEyeColor: Predicate<String> = Predicate { it in setOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth") }
+    private val validPassportId: Predicate<String> = Predicate { DIGIT_MATCHER.matches(it) }
+
+    private fun validatedFields(passport: Passport) =
         validBirthYear.test(passport.byr)
             .and(validIssueYear.test(passport.iyr))
             .and(validExpirationYear.test(passport.eyr))
