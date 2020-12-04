@@ -9,6 +9,26 @@ fun main() {
     Day4().part2()
 }
 class Day4 {
+    private val HEX_COLOR_MATCHER = "#([a-f0-9]{6})".toRegex();
+    private val DIGIT_MATCHER = "\\d{9}".toRegex();
+
+    private val validBirthYear: Predicate<String> = Predicate { it.toInt() in 1920..2002 }
+    private val validIssueYear: Predicate<String> = Predicate { it.toInt() in 2010..2020 }
+    private val validExpirationYear: Predicate<String> = Predicate { it.toInt() in 2020..2030 }
+    private val validHeight: Predicate<String> = Predicate {
+        val number = it.substring(0, it.length - 2)
+
+        val unit = it.substring(it.length - 2)
+        when (unit) {
+            "cm" -> number.isNotEmpty() && number.toInt() in 150..193
+            "in" -> number.isNotEmpty() && number.toInt() in 59..76
+            else -> false
+        }
+    }
+    private val validHairColor: Predicate<String> = Predicate { HEX_COLOR_MATCHER.matches(it) }
+    private val validEyeColor: Predicate<String> = Predicate { it in setOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth") }
+    private val validPassportId: Predicate<String> = Predicate { DIGIT_MATCHER.matches(it) }
+
     fun part1() {
         val count = createPassports()
             .filter(this::requiredFieldsPresent)
@@ -22,12 +42,8 @@ class Day4 {
 
         val count = passports
             .filter(this::requiredFieldsPresent)
-            .filter {
-            validBirthYear.test(it.byr)
-                .and(validIssueYear.test(it.iyr))
-                .and(validExpirationYear.test(it.eyr))
-                .and(validHeight.test(it.hgt))
-        }.count()
+            .filter(this::validFields)
+            .count()
 
         println(count)
     }
@@ -70,24 +86,19 @@ class Day4 {
             passport.ecl.isNotEmpty() &&
             passport.pid.isNotEmpty()
 
+    private fun validFields(passport: Passport) =
+        validBirthYear.test(passport.byr)
+            .and(validIssueYear.test(passport.iyr))
+            .and(validExpirationYear.test(passport.eyr))
+            .and(validHeight.test(passport.hgt))
+            .and(validHairColor.test(passport.hcl))
+            .and(validEyeColor.test(passport.ecl))
+            .and(validPassportId.test(passport.pid))
+
     private fun createKeyValueMap(it: String) = it.split(" ")
         .map { it.split(":") }
         .map { it[0] to it[1] }
         .toMap()
-
-    val validBirthYear: Predicate<String> = Predicate { it.toInt() in 1920..2002 }
-    val validIssueYear: Predicate<String> = Predicate { it.toInt() in 2010..2020 }
-    val validExpirationYear: Predicate<String> = Predicate { it.toInt() in 2020..2030 }
-    val validHeight: Predicate<String> = Predicate {
-        val number = it.substring(0, it.length - 2)
-
-        val unit = it.substring(it.length - 2)
-        when (unit) {
-            "cm" -> number.isNotEmpty() && number.toInt() in 150..193
-            "in" -> number.isNotEmpty() && number.toInt() in 59..76
-            else -> false
-        }
-    }
 
     class Passport() {
         var byr: String = ""
