@@ -29,6 +29,7 @@ fun main() {
             }
         }
     }
+    passports.add(currentPassport)
 
     passports.forEach {
         val isValid = requiredFieldsPresent(it)
