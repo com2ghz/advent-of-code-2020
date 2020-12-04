@@ -15,7 +15,6 @@ fun main() {
         } else {
             val keyVal = createKeyValueMap(line)
             keyVal.forEach() {
-                currentPassport.keys.add(it.key)
                 when (it.key) {
                     "byr" -> currentPassport.byr = it.value
                     "iyr" -> currentPassport.iyr = it.value
@@ -31,23 +30,30 @@ fun main() {
         }
     }
 
+    passports.forEach {
+        val isValid = requiredFieldsPresent(it)
+        println("$isValid $it")
+    }
+
     val count = passports.filter {
-        !it.byr.isEmpty() &&
-                !it.iyr.isEmpty() &&
-                !it.eyr.isEmpty() &&
-                !it.hgt.isEmpty() &&
-                !it.hcl.isEmpty() &&
-                !it.ecl.isEmpty() &&
-                !it.pid.isEmpty()
+        requiredFieldsPresent(it)
     }.count()
 
     println(count)
 }
 
-private fun createKeyValueMap(it: String) = it.split(" ").map {
-    val keyVal = it.split(":")
-    keyVal[0] to keyVal[1]
-}.toMap()
+private fun requiredFieldsPresent(passport: Passport) = !passport.byr.isEmpty() &&
+        !passport.iyr.isEmpty() &&
+        !passport.eyr.isEmpty() &&
+        !passport.hgt.isEmpty() &&
+        !passport.hcl.isEmpty() &&
+        !passport.ecl.isEmpty() &&
+        !passport.pid.isEmpty()
+
+private fun createKeyValueMap(it: String) = it.split(" ")
+    .map { it.split(":") }
+    .map { it[0] to it[1] }
+    .toMap()
 
 class Passport() {
     var byr: String = ""
@@ -58,7 +64,6 @@ class Passport() {
     var ecl: String = ""
     var pid: String = ""
     var cid: String = ""
-    val keys = HashSet<String>()
 
     override fun toString(): String {
         return "{byr: $byr, iyr: $iyr, eyr: $eyr, hgt: $hgt, hcl: $hcl, ecl: $ecl, pid: $pid, cid: $cid}"
