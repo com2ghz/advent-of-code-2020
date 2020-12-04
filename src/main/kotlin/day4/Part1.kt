@@ -8,16 +8,14 @@ fun main() {
 
     val passports = ArrayList<Passport>()
     var currentPassport = Passport()
-    lines.forEach {
-        if (it.isEmpty()) {
+    lines.forEach { line ->
+        if (line.isEmpty()) {
             passports.add(currentPassport)
             currentPassport = Passport()
         } else {
-        val keyVal = it.split(" ").map {
-            val keyVal = it.split(":")
-            keyVal[0] to keyVal[1]
-        }.toMap()
-            keyVal.map {
+            val keyVal = createKeyValueMap(line)
+            keyVal.forEach() {
+                currentPassport.keys.add(it.key)
                 when (it.key) {
                     "byr" -> currentPassport.byr = it.value
                     "iyr" -> currentPassport.iyr = it.value
@@ -46,6 +44,11 @@ fun main() {
     println(count)
 }
 
+private fun createKeyValueMap(it: String) = it.split(" ").map {
+    val keyVal = it.split(":")
+    keyVal[0] to keyVal[1]
+}.toMap()
+
 class Passport() {
     var byr: String = ""
     var iyr: String = ""
@@ -55,6 +58,7 @@ class Passport() {
     var ecl: String = ""
     var pid: String = ""
     var cid: String = ""
+    val keys = HashSet<String>()
 
     override fun toString(): String {
         return "{byr: $byr, iyr: $iyr, eyr: $eyr, hgt: $hgt, hcl: $hcl, ecl: $ecl, pid: $pid, cid: $cid}"
