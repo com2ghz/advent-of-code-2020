@@ -1,34 +1,31 @@
 package day4
 
+import Puzzle
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.function.Predicate
 
 fun main() {
-    Day4().part1()
-    Day4().part2()
+    Day4.partOne()
+    Day4.partTwo()
 }
-class Day4 {
+object Day4 : Puzzle {
     private val HEX_COLOR_MATCHER = "#([a-f0-9]{6})".toRegex();
     private val DIGIT_MATCHER = "\\d{9}".toRegex();
     private val LINES = Files.readAllLines(Paths.get("src/main/resources/day4.txt"))
 
-    fun part1() {
+    override fun partOne() {
         val count = createPassports()
             .filter(this::requiredFieldsPresent)
             .count()
-
         println(count)
     }
 
-    fun part2() {
-        val passports = createPassports()
-
-        val count = passports
+    override fun partTwo() {
+        val count = createPassports()
             .filter(this::requiredFieldsPresent)
             .filter(this::validatedFields)
             .count()
-
         println(count)
     }
 
@@ -108,9 +105,5 @@ class Day4 {
         var ecl: String = ""
         var pid: String = ""
         var cid: String = ""
-
-        override fun toString(): String {
-            return "{byr: $byr, iyr: $iyr, eyr: $eyr, hgt: $hgt, hcl: $hcl, ecl: $ecl, pid: $pid, cid: $cid}"
-        }
     }
 }
