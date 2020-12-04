@@ -42,13 +42,13 @@ fun main() {
     println(count)
 }
 
-private fun requiredFieldsPresent(passport: Passport) = !passport.byr.isEmpty() &&
-        !passport.iyr.isEmpty() &&
-        !passport.eyr.isEmpty() &&
-        !passport.hgt.isEmpty() &&
-        !passport.hcl.isEmpty() &&
-        !passport.ecl.isEmpty() &&
-        !passport.pid.isEmpty()
+private fun requiredFieldsPresent(passport: Passport) = passport.byr.isNotEmpty() &&
+        passport.iyr.isNotEmpty() &&
+        passport.eyr.isNotEmpty() &&
+        passport.hgt.isNotEmpty() &&
+        passport.hcl.isNotEmpty() &&
+        passport.ecl.isNotEmpty() &&
+        passport.pid.isNotEmpty()
 
 private fun createKeyValueMap(it: String) = it.split(" ")
     .map { it.split(":") }
