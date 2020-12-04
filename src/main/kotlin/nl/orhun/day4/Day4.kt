@@ -1,18 +1,16 @@
-package day4
+package nl.orhun.day4
 
-import Puzzle
-import java.nio.file.Files
-import java.nio.file.Paths
+import nl.orhun.Puzzle
 import java.util.function.Predicate
 
 fun main() {
     Day4.partOne()
     Day4.partTwo()
 }
-object Day4 : Puzzle {
+object Day4 : Puzzle() {
     private val HEX_COLOR_MATCHER = "#([a-f0-9]{6})".toRegex();
     private val DIGIT_MATCHER = "\\d{9}".toRegex();
-    private val LINES = Files.readAllLines(Paths.get("src/main/resources/day4.txt"))
+    private val LINES = readLines(2020, 4)
 
     override fun partOne() {
         val count = createPassports()
