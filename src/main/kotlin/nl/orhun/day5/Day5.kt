@@ -8,12 +8,17 @@ fun main() {
 }
 object Day5 : Puzzle() {
     private val lines = readLines(2020, 5)
+    private val allSeats = 0..0b1111111111;
 
     override fun partOne() {
         println(createSeats().maxOf { it.seatId })
     }
 
     override fun partTwo() {
+        val seatIds = createSeats().map { it.seatId }
+        val seatId = (allSeats - seatIds)
+            .first { seatIds.contains(it - 1) and seatIds.contains(it + 1) }
+        println(seatId)
     }
 
     private fun createSeats() = lines.map {
