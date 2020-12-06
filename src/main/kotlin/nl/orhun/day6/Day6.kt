@@ -24,10 +24,8 @@ object Day6 : Puzzle() {
         val sum = createGroups()
             .map { group ->
                 group.map { it.toList() }
-                    .flatten()
-                    .groupingBy { it }
-                    .eachCount()
-                    .filterValues { it == group.size }.count()
+                    .reduce { acc, c ->  acc.intersect(c).toList()}
+                    .count()
             }.sum()
         println(sum)
     }
