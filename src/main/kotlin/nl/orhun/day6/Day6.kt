@@ -25,15 +25,15 @@ object Day6 : Puzzle() {
         val sum = data.split("\n\n")
             .map { it.split("\n") }
             .map { group ->
-                val distinctAnswers = group.map { it.toList() }
+                val distinctQuestions = group.map { it.toList() }
                     .flatten()
                     .distinct()
                 println("Group(${group.size}): $group")
-                println("Unique: $distinctAnswers")
+                println("Unique: $distinctQuestions")
 
-                val count = group.filter { it.toList().containsAll(distinctAnswers) }
+                val count = group.filter { it.toList().containsAll(distinctQuestions) }
                     .count()
-                println("All answered: $count")
+                println("All questions: $count")
                 println()
 
                 count
