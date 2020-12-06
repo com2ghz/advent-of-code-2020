@@ -10,8 +10,7 @@ object Day6 : Puzzle() {
     private val data = readString(2020, 6)
 
     override fun partOne() {
-        val sum = data.split("\n\n")
-            .map { it.split("\n") }
+        val sum = createGroups()
             .map { group ->
                 group.map { it.toList() }
                     .flatten()
@@ -22,8 +21,7 @@ object Day6 : Puzzle() {
     }
 
     override fun partTwo() {
-        val sum = data.split("\n\n")
-            .map { it.split("\n") }
+        val sum = createGroups()
             .map { group ->
                 group.map { it.toList() }
                     .flatten()
@@ -33,4 +31,7 @@ object Day6 : Puzzle() {
             }.sum()
         println(sum)
     }
+
+    private fun createGroups() = data.split("\n\n")
+        .map { it.split("\n") }
 }
