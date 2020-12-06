@@ -3,7 +3,7 @@ package nl.orhun.day6
 import nl.orhun.Puzzle
 
 fun main() {
-    Day6.partOne()
+//    Day6.partOne()
     Day6.partTwo()
 }
 object Day6 : Puzzle() {
@@ -25,18 +25,7 @@ object Day6 : Puzzle() {
         val sum = data.split("\n\n")
             .map { it.split("\n") }
             .map { group ->
-                val distinctQuestions = group.map { it.toList() }
-                    .flatten()
-                    .distinct()
-                println("Group(${group.size}): $group")
-                println("Unique: $distinctQuestions")
-
-                val count = group.filter { it.toList().containsAll(distinctQuestions) }
-                    .count()
-                println("All questions: $count")
-                println()
-
-                count
+                group.map { it.toList() }.flatten().groupingBy { it }.eachCount().filterValues { it == group.size }.count()
             }.sum()
         println(sum)
     }
