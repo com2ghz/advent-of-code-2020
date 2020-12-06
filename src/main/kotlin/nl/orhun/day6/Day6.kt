@@ -22,5 +22,22 @@ object Day6 : Puzzle() {
     }
 
     override fun partTwo() {
+        val sum = data.split("\n\n")
+            .map { it.split("\n") }
+            .map { group ->
+                val distinctAnswers = group.map { it.toList() }
+                    .flatten()
+                    .distinct()
+                println("Group(${group.size}): $group")
+                println("Unique: $distinctAnswers")
+
+                val count = group.filter { it.toList().containsAll(distinctAnswers) }
+                    .count()
+                println("All answered: $count")
+                println()
+
+                count
+            }.sum()
+        println(sum)
     }
 }
